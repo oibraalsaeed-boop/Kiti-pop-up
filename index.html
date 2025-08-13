@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>أهلا و سهلا بك في كيتي لايف</title>
+<style>
+  :root {
+    --card-bg: #ffffffee;
+    --radius: 22px;
+    --shadow: 0 20px 40px rgba(0,0,0,0.12);
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", "Cairo", "Tajawal", Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 10% 0%, #f6f9ff 0%, #f0f7ff 25%, #eaf4ff 45%, #e8f5ff 60%, #e9faff 100%),
+                linear-gradient(135deg, #f9f9ff 0%, #eef5ff 50%, #e7fbff 100%);
+    overflow: hidden;
+  }
+
+  /* Popup card */
+  .popup {
+    position: fixed;
+    inset-inline: 0;
+    top: 20%;
+    margin-inline: auto;
+    width: min(92vw, 720px);
+    background: var(--card-bg);
+    backdrop-filter: blur(6px);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.06);
+    text-align: center;
+    padding: clamp(16px, 4vw, 28px);
+    opacity: 0;
+    transform: translateY(10px); /* start slightly down */
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #00c2ff, #38e396);
+    color: #fff;
+    letter-spacing: .2px;
+    margin-bottom: 12px;
+  }
+  h1 {
+    margin: 6px 0 0;
+    font-size: clamp(26px, 6vw, 44px);
+    line-height: 1.2;
+    color: #0f172a;
+  }
+  p.lead {
+    margin: 10px auto 0;
+    font-size: clamp(14px, 2.8vw, 18px);
+    color: #334155;
+    max-width: 48ch;
+  }
+
+  /* Entrance: fade in + move up */
+  .enter {
+    animation: fadeUpIn 500ms ease-out forwards;
+  }
+
+  /* Exit: fade out + move down */
+  .exit {
+    animation: fadeDownOut 600ms ease-in forwards;
+  }
+
+  @keyframes fadeUpIn {
+    0%   { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeDownOut {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(14px); }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .enter, .exit { animation: none; }
+    .popup { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+  <section id="welcome" class="popup" role="dialog" aria-live="polite" aria-label="Welcome message">
+    <span class="badge">كيتي لايف</span>
+    <h1>أهلا و سهلا بك في كيتي لايف</h1>
+    <p class="lead">نتمنى لك تجربة ممتعة—استكشف أحدث المزايا والعروض.</p>
+  </section>
+
+<script>
+  // Show for 3 seconds, then fade out.
+  document.addEventListener("DOMContentLoaded", function () {
+    const el = document.getElementById("welcome");
+    if (!el) return;
+
+    // Entrance animation
+    el.classList.add("enter");
+
+    // Keep visible for 3 seconds, then exit
+    const SHOW_MS = 3000;
+
+    setTimeout(() => {
+      // Swap to exit animation
+      el.classList.remove("enter");
+      el.classList.add("exit");
+
+      // After exit animation, remove from layout
+      el.addEventListener("animationend", () => {
+        el.style.display = "none";
+      }, { once: true });
+
+    }, SHOW_MS);
+  });
+</script>
+</body>
+</html>
